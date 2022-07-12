@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Tag;
+use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Tag;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DbTestController extends AbstractController
 {
@@ -21,13 +22,21 @@ class DbTestController extends AbstractController
         // inspection de la liste
         dump($categories);
 
-        // récupération du repository des catégories
+        // récupération du repository des tags
         $repository = $doctrine->getRepository(Tag::class);
-        // récupération de la liste complète de toutes les catégories
+        // récupération de la liste complète de toutes les tags
         $tags = $repository->findAll();
         // inspection de la liste
         dump($tags);
 
+        // récupération du repository des tags
+        $repository = $doctrine->getRepository(Article::class);
+        // récupération de la liste complète de toutes les tags
+        $articles = $repository->findAll();
+        // inspection de la liste
+        dump($articles);
+        
+        // hack déguelace
         exit();
     }
 }
