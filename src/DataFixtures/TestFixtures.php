@@ -136,6 +136,7 @@ class TestFixtures extends Fixture
 
             // sélection d'une catégorie depuis la liste compltète.
             // attention, la fonction renvoie un tableau, c'est pour ça qu'il faut utiliser [0] pour récupérer le premier élément du tableau
+            $category = $faker->randomElements($categories)[0];
             $article->setCategory($category);
             // génération d'un nombre aléatoire compris entre 0 et 4 inclus
             $count = random_int(0, 4);
