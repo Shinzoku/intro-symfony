@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Page;
 use App\Entity\Tag;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,9 +34,27 @@ class DbTestController extends AbstractController
         $repository = $doctrine->getRepository(Article::class);
         // récupération de la liste complète de toutes les tags
         $articles = $repository->findAll();
-        // inspection de la liste
-        dump($articles);
-        
+
+        foreach ($articles as $article) {
+            // inspection de la liste
+            dump($article);
+
+            // récupération des tags de l'article
+            $tags = $article->getTags();
+
+            foreach ($tags as $tag){
+                // inspection du tag
+                dump($tag);
+            }
+        }
+
+        // récupération du repository des pages
+        $repository = $doctrine->getRepository(Page::class);
+        // récupération de la liste complète de toutes les pages
+        $pages = $repository->findAll();
+        // inspections de la liste des pages
+        dump($pages);
+
         // hack déguelace
         exit();
     }
