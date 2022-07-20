@@ -133,24 +133,24 @@ class DbTestController extends AbstractController
         $articles = $articleRepository->findByKeyword('plat');
         dump($articles);
 
-        $writer = $writerRepository->find(1);
+        $writer = $writerRepository->find(7);
         $user = $writer->getUser();
         // force doctrine à lancer le lazy loading
         $user->getEmail();
         dump($user);
 
-        $editor = $editorRepository->find(1);
+        $editor = $editorRepository->find(7);
         $user = $editor->getUser();
         // force doctrine à lancer le lazy loading
         $user->getEmail();
         dump($user);
 
-        $user1 = $userRepository->find(1);
+        $user1 = $userRepository->find(12);
         // force doctrine à lancer le lazy loading
         $user1->getEmail();
         dump($user1);
 
-        $user2 = $userRepository->find(2);
+        $user2 = $userRepository->find(13);
         // force doctrine à lancer le lazy loading
         $user2->getEmail();
         dump($user2);
