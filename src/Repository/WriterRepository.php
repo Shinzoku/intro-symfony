@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Writer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,6 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class WriterRepository extends ServiceEntityRepository
 {
+    use ProfileTrait;
+    
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Writer::class);
@@ -37,6 +40,11 @@ class WriterRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findByUser(User $user): ?Writer
+    {
+        return $this->__findByUser($user);
     }
 
 //    /**
