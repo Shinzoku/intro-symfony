@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Editor;
 use App\Entity\Page;
 use App\Entity\Tag;
+use App\Entity\User;
+use App\Entity\Writer;
 use App\Repository\ArticleRepository;
 use App\Repository\EditorRepository;
 use App\Repository\UserRepository;
@@ -154,6 +157,11 @@ class DbTestController extends AbstractController
         // force doctrine à lancer le lazy loading
         $user2->getEmail();
         dump($user2);
+
+        $editor = $editorRepository->findbyUser($user1);
+        dump($editor);
+        $editor = $editorRepository->findbyUser($user2);
+        dump($editor);
 
         exit();
     }

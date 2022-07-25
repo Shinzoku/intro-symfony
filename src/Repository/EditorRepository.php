@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Editor;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,20 @@ class EditorRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findByUser(User $user): ?Editor
+    {
+        return $this->createQueryBuilder('e')
+            // faire une jointure avec l'utilisateur lié au profil editeur
+            ->join('e.user', 'u')
+            // ne retenir que le profile editeur qui est associé à l'utilisateur passé en paramètre de la fonction
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $user->getId())
+            // exécution de la requête
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
 //    /**
