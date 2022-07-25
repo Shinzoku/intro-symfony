@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Editor;
@@ -136,24 +137,24 @@ class DbTestController extends AbstractController
         $articles = $articleRepository->findByKeyword('plat');
         dump($articles);
 
-        $writer = $writerRepository->find(7);
+        $writer = $writerRepository->find(1);
         $user = $writer->getUser();
         // force doctrine à lancer le lazy loading
         $user->getEmail();
         dump($user);
 
-        $editor = $editorRepository->find(7);
+        $editor = $editorRepository->find(1);
         $user = $editor->getUser();
         // force doctrine à lancer le lazy loading
         $user->getEmail();
         dump($user);
 
-        $user1 = $userRepository->find(12);
+        $user1 = $userRepository->find(1);
         // force doctrine à lancer le lazy loading
         $user1->getEmail();
         dump($user1);
 
-        $user2 = $userRepository->find(13);
+        $user2 = $userRepository->find(2);
         // force doctrine à lancer le lazy loading
         $user2->getEmail();
         dump($user2);
@@ -171,6 +172,13 @@ class DbTestController extends AbstractController
         $role = 'ROLE_WRITER';
         $users = $userRepository->findByRole($role);
         dump($users);
+
+        $articles  = $articleRepository->findByPublishedAtIsNull();
+        dump($articles);
+
+        $date = DateTime::createFromFormat('Y-m-d H:i:s', '2022-06-30 00:00:00');
+        $articles = $articleRepository->findByPublishedAtBefore($date);
+        dump($articles);
 
         exit();
     }
