@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}Homepage{% endblock %}
 {% block body %}
+
 <h1>Homepage</h1>
 <h2>Les 5 derniers articles parus</h2>
 
@@ -8,7 +9,7 @@
 <ul>
     {% for article in articles %}
     <li>
-        <a href="">{{ article.title }}</a>
+        <a href="{{ path('app_front_article', {'id': article.id}) }} ">{{ article.title }}</a>
         {% if article.writer %}
             (auteur : {{ article.writer.user.email}})
         {% endif %}
