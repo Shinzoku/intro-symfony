@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Repository\WriterRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,11 +14,28 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/article')]
 class AdminArticleController extends AbstractController
 {
+    private WriterRepository $writerRepository;
+    
+    public function __construct(WriterRepository $writerRepository)
+    {
+        $this->writerRepository = $writerRepository;
+    }
+
     #[Route('/', name: 'app_admin_article_index', methods: ['GET'])]
     public function index(ArticleRepository $articleRepository): Response
     {
+        $articles = [];
+        
+        if ($this->isGranted('ROLE_EDITOR')) {
+            $articles = $articleRepository->findAll();
+        } elseif ($this->isGranted('ROLE_WRITER')) {
+            $user = $this->getUser();
+            $writer = $this->writerRepository->findByUser($user);
+            $articles = $writer->getArticles();
+        }
+        
         return $this->render('admin_article/index.html.twig', [
-            'articles' => $articleRepository->findAll(),
+            'articles' => $articles,
         ]);
     }
 

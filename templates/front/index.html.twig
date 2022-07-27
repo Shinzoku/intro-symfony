@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Hello FrontController!{% endblock %}
+{% block title %}Homepage{% endblock %}
 {% block body %}
 <h1>Homepage</h1>
 <h2>Les 5 derniers articles parus</h2>
@@ -18,4 +18,11 @@
 {% else %}
 Il n'y a encore aucun article.
 {% endif %}
+{% endblock %}
+
+{# Test #}
+{% block body_javascripts %}
+<script>
+console.log('Hello Frontpage');
+</script>
 {% endblock %}
