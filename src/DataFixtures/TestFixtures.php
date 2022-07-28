@@ -85,6 +85,9 @@ class TestFixtures extends Fixture
         $repository = $this->doctrine->getRepository(Tag::class);
         $tags = $repository->findAll();
 
+        $repository = $this->doctrine->getRepository(Writer::class);
+        $writer = $repository->find(1);
+
         $articleDatas = [
             [
                 'title' => 'Boeuf bourguignon',
@@ -171,6 +174,9 @@ class TestFixtures extends Fixture
     {
         $repository = $this->doctrine->getRepository(Category::class);
         $categories = $repository->findAll();
+
+        $repository = $this->doctrine->getRepository(Writer::class);
+        $writer = $repository->find(1);
 
         $pageDatas = [
             [
