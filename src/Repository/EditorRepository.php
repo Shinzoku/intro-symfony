@@ -47,6 +47,19 @@ class EditorRepository extends ServiceEntityRepository
         return $this->__findByUser($user);
     }
 
+    /**
+    * @return Editor[] Returns an array of Editor objects
+    */
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.deletedAt is NULL')
+            ->orderBy('e.title', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Editor[] Returns an array of Editor objects
 //     */

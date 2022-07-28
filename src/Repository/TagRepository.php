@@ -39,6 +39,19 @@ class TagRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * @return Tag[] Returns an array of Tag objects
+    */
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.deletedAt is NULL')
+            ->orderBy('t.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Tag[] Returns an array of Tag objects
 //     */

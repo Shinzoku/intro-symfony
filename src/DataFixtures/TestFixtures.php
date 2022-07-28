@@ -11,8 +11,8 @@ use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory  as FakerFactory;
-use Faker\Generator  as FakerGenerator;
+use Faker\Factory as FakerFactory;
+use Faker\Generator as FakerGenerator;
 
 class TestFixtures extends Fixture
 {

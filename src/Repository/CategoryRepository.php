@@ -39,6 +39,19 @@ class CategoryRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * @return Category[] Returns an array of Category objects
+    */
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.deletedAt is NULL')
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */

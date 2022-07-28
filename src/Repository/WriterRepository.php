@@ -68,6 +68,19 @@ class WriterRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+    * @return Writer[] Returns an array of Writer objects
+    */
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('w')
+            ->andWhere('w.deletedAt is NULL')
+            ->orderBy('w.email', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Writer[] Returns an array of Writer objects
 //     */
