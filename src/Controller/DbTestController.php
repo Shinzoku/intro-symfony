@@ -5,11 +5,8 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Article;
 use App\Entity\Category;
-use App\Entity\Editor;
 use App\Entity\Page;
 use App\Entity\Tag;
-use App\Entity\User;
-use App\Entity\Writer;
 use App\Repository\ArticleRepository;
 use App\Repository\EditorRepository;
 use App\Repository\UserRepository;
@@ -179,6 +176,14 @@ class DbTestController extends AbstractController
         $date = DateTime::createFromFormat('Y-m-d H:i:s', '2022-06-30 00:00:00');
         $articles = $articleRepository->findByPublishedAtBefore($date);
         dump($articles);
+
+        $writer = $writerRepository->find(1);
+        $article1 = $articleRepository->find(1);
+        $article4 = $articleRepository->find(4);
+        $isAuthor = $writerRepository->isAuthor($writer, $article1);
+        dump($isAuthor);
+        $isAuthor = $writerRepository->isAuthor($writer, $article4);
+        dump($isAuthor);
 
         exit();
     }

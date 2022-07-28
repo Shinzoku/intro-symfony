@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Page;
 use App\Entity\Tag;
+use App\Entity\Writer;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ManagerRegistry;
@@ -91,6 +92,7 @@ class TestFixtures extends Fixture
                 'published_at' => DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2022-06-30 09:00:00'),
                 'category' => $categories[0],
                 'tags' => [$tags[2]],
+                'writer' => $writer,
             ],
             [
                 'title' => 'Spaghetti carbonara',
@@ -98,6 +100,7 @@ class TestFixtures extends Fixture
                 'published_at' => null,
                 'category' => $categories[1],
                 'tags' => [$tags[0], $tags[2]],
+                'writer' => $writer,
             ],
             [
                 'title' => 'Borsh',
@@ -105,6 +108,7 @@ class TestFixtures extends Fixture
                 'published_at' => DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2022-07-03 11:00:00'),
                 'category' => $categories[2],
                 'tags' => [$tags[2]],
+                'writer' => $writer,
             ],
         ];
 
@@ -118,6 +122,8 @@ class TestFixtures extends Fixture
             foreach ($articleData['tags'] as $tag) {
                 $article->addTag($tag);
             }
+
+            $article->setWriter($writer);
 
             $manager->persist($article);
         }
@@ -145,6 +151,7 @@ class TestFixtures extends Fixture
             // attention, la fonction renvoie un tableau, c'est pour ça qu'il faut utiliser [0] pour récupérer le premier élément du tableau
             $category = $faker->randomElements($categories)[0];
             $article->setCategory($category);
+
             // génération d'un nombre aléatoire compris entre 0 et 4 inclus
             $count = random_int(0, 4);
             // sélection de 0,1,2,3 ou 4 tags depuis la liste complète
@@ -170,16 +177,19 @@ class TestFixtures extends Fixture
                 'title' => 'La cuisine française',
                 'body' => "C'est la cuisine de la France.",
                 'category' => $categories[0],
+                'writer' => $writer,
             ],
             [
                 'title' => 'La cuisine italienne',
                 'body' => "C'est la cuisine de l'Italie.",
                 'category' => $categories[1],
+                'writer' => $writer,
             ],
             [
                 'title' => 'La cuisine ukrainienne',
                 'body' => "C'est la cuisine de l'Ukraine.",
                 'category' => $categories[2],
+                'writer' => $writer,
             ],
         ];
 
@@ -188,6 +198,7 @@ class TestFixtures extends Fixture
             $page->setTitle($pageData['title']);
             $page->setBody($pageData['body']);
             $page->setCategory($pageData['category']);
+            $page->setWriter($writer);
 
             $manager->persist($page);
         }

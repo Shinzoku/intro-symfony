@@ -4,13 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Form\ArticleType;
-use App\Repository\WriterRepository;
 use App\Repository\ArticleRepository;
+use App\Repository\WriterRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\NotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 #[Route('/admin/article')]
 class AdminArticleController extends AbstractController
@@ -19,6 +21,7 @@ class AdminArticleController extends AbstractController
     
     public function __construct(WriterRepository $writerRepository)
     {
+        // récupération du writer repository (grâce à l'auto wiring ci-dessus)
         $this->writerRepository = $writerRepository;
     }
 
@@ -32,15 +35,20 @@ class AdminArticleController extends AbstractController
         $articles = [];
         
         if ($this->isGranted('ROLE_EDITOR')) {
-            // si l'utilisateur est un éditeur, il peut voir la liste complète des articles
+            // si l'utilisateur est un éditeur, il peut voir la liste complète
             $articles = $articleRepository->findAll();
         } elseif ($this->isGranted('ROLE_WRITER')) {
+            // si l'utilisateur est un rédacteur, il ne peut voir que ses articles
+            // récupération du compte utilsateur
             $user = $this->getUser();
+            // récupération du profile rédacteur à partir du compte utilsateur
             $writer = $this->writerRepository->findByUser($user);
+            // récupération des articles du profile rédacteur
             $articles = $writer->getArticles();
         }
         
         return $this->render('admin_article/index.html.twig', [
+            // envoi de la liste des articles à la vue
             'articles' => $articles,
         ]);
     }
@@ -113,22 +121,36 @@ class AdminArticleController extends AbstractController
 
     private function filterUser(Article $article)
     {
-        // les utilisateurs non authentifiés sont renvoyés vers la page de login.
+        // les utilisateurs non authentifiés sont renvoyés vers la page de login
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // méthode alternative à la méthode denyAccessUnlessGranted
+        // méthode alternative à la méthode denyAccessUnlessGranted()
         // if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-               // l'utilisateur n'est pas authentifié
+        //     // l'utilisateur n'est pas authentifié
         //     throw new AccessDeniedException();
+        //     // on peut aussi générer une erreur Not Found 404 
+        //     throw new NotFoundHttpException();
         // }
 
-        if (!$this->isGranted('ROLE_EDITOR') && isGranted('ROLE_WRITER')) {
+        if (!$this->isGranted('ROLE_EDITOR') && $this->isGranted('ROLE_WRITER')) {
             $user = $this->getUser();
             $writer = $this->writerRepository->findByUser($user);
-            $articles = $writer->getArticles();
-            if (!$articles->contains($article)) {
+
+            // première méthode pour vérifier si un rédacteur est auteur d'un article ou non
+            // $articles = $writer->getArticles();
+            // if (!$articles->contains($article)) {
+            //     // le rédacteur n'est pas auteur de l'article
+            //     throw new AccessDeniedException();
+            //     // on peut aussi générer une erreur Not Found 404 
+            //     // throw new NotFoundHttpException();
+            // }
+
+            // deuxième méthode pour vérifier si un rédacteur est auteur d'un article ou non
+            if (!$this->writerRepository->isAuthor($writer, $article)) {
                 // le rédacteur n'est pas auteur de l'article
                 throw new AccessDeniedException();
+                // on peut aussi générer une erreur Not Found 404 
+                // throw new NotFoundHttpException();
             }
         }
     }
