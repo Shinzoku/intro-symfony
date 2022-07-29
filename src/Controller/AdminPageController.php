@@ -17,7 +17,7 @@ class AdminPageController extends AbstractController
     public function index(PageRepository $pageRepository): Response
     {
         return $this->render('admin_page/index.html.twig', [
-            'pages' => $pageRepository->findAllSorted(),
+            'pages' => $pageRepository->findAll(),
         ]);
     }
 

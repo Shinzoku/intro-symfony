@@ -17,7 +17,7 @@ class AdminEditorController extends AbstractController
     public function index(EditorRepository $editorRepository): Response
     {
         return $this->render('admin_editor/index.html.twig', [
-            'editors' => $editorRepository->findAllSorted(),
+            'editors' => $editorRepository->findAll(),
         ]);
     }
 

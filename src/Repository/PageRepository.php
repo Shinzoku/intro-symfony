@@ -39,19 +39,6 @@ class PageRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-    * @return Page[] Returns an array of Page objects
-    */
-    public function findAllSorted(): array
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.deletedAt is NULL')
-            ->orderBy('p.title', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
 //    /**
 //     * @return Page[] Returns an array of Page objects
 //     */

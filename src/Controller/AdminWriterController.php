@@ -17,7 +17,7 @@ class AdminWriterController extends AbstractController
     public function index(WriterRepository $writerRepository): Response
     {
         return $this->render('admin_writer/index.html.twig', [
-            'writers' => $writerRepository->findAllSorted(),
+            'writers' => $writerRepository->findAll(),
         ]);
     }
 

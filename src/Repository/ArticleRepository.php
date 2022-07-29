@@ -63,7 +63,6 @@ class ArticleRepository extends ServiceEntityRepository
     public function findAllSorted(): array
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.deletedAt is NULL')
             ->orderBy('a.title', 'ASC')
             ->getQuery()
             ->getResult()
