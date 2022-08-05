@@ -34,7 +34,7 @@ class Article
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $published_at;
 
-    #[Assert\Count(min: 2, max: 5)]
+    #[Assert\Count(min: 0, max: 5)]
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'articles')]
     private $tags;
 
