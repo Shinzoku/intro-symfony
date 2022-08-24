@@ -15,13 +15,15 @@ class FrontController extends AbstractController
     #[Route('/', name: 'app_front_index')]
     public function index(ArticleRepository $repository, Request $request, PaginatorInterface $paginator): Response
     {
-        $datas = $repository->findAll();
+        // $datas = $repository->findAll();
 
-        $articles = $paginator->paginate(
-            $datas, // Requête contenant les données à paginer (ici nos articles)
-            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            20 // Nombre de résultats par page
-        );
+        // $articles = $paginator->paginate(
+        //     $datas, // Requête contenant les données à paginer (ici nos articles)
+        //     $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+        //     20 // Nombre de résultats par page
+        // );
+
+        $articles = $repository->findNLastPublised(5);
 
         return $this->render('front/index.html.twig', [
             'articles' => $articles,
